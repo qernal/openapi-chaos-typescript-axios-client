@@ -12,6 +12,9 @@ docs/AuthTokenMeta.md
 docs/AuthTokenPatch.md
 docs/BadRequestResponse.md
 docs/BadRequestResponseFields.md
+docs/BillingAccount.md
+docs/BillingAccountBody.md
+docs/BillingApi.md
 docs/ConflictResponse.md
 docs/Date.md
 docs/DeletedResponse.md
@@ -66,6 +69,11 @@ docs/OrganisationsApi.md
 docs/OrganisationsListPageParameter.md
 docs/PaginationLinks.md
 docs/PaginationMeta.md
+docs/PaymentMethod.md
+docs/PaymentMethodAddress.md
+docs/PaymentMethodBody.md
+docs/PaymentMethodCreate.md
+docs/PaymentMethodCreateLinks.md
 docs/ProjectBody.md
 docs/ProjectBodyPatch.md
 docs/ProjectResponse.md

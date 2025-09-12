@@ -1,4 +1,4 @@
-## @qernal/chaos-client@1.0.0
+## @qernal/chaos-client@1.0.1
 
 This generator creates TypeScript/JavaScript client that utilizes [axios](https://github.com/axios/axios). The generated Node module can be used in the following environments:
 
@@ -36,7 +36,7 @@ navigate to the folder of your consuming project and run one of the following co
 _published:_
 
 ```
-npm install @qernal/chaos-client@1.0.0 --save
+npm install @qernal/chaos-client@1.0.1 --save
 ```
 
 _unPublished (not recommended):_
@@ -51,6 +51,16 @@ All URIs are relative to *https://chaos.qernal.com/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*BillingApi* | [**accountsPaymentMethodsCreate**](docs/BillingApi.md#accountspaymentmethodscreate) | **POST** /billing/accounts/{billing_account_id}/payment-methods | Create a new payment method for a billing account
+*BillingApi* | [**accountsPaymentMethodsList**](docs/BillingApi.md#accountspaymentmethodslist) | **GET** /billing/accounts/{billing_account_id}/payment-methods | List payment methods for a billing account
+*BillingApi* | [**billingAccountsCreate**](docs/BillingApi.md#billingaccountscreate) | **POST** /billing/accounts | Create billing account
+*BillingApi* | [**billingAccountsDelete**](docs/BillingApi.md#billingaccountsdelete) | **DELETE** /billing/accounts/{billing_account_id} | Delete billing account
+*BillingApi* | [**billingAccountsGet**](docs/BillingApi.md#billingaccountsget) | **GET** /billing/accounts/{billing_account_id} | Get billing account
+*BillingApi* | [**billingAccountsList**](docs/BillingApi.md#billingaccountslist) | **GET** /billing/accounts | List billing accounts
+*BillingApi* | [**billingAccountsUpdate**](docs/BillingApi.md#billingaccountsupdate) | **PUT** /billing/accounts/{billing_account_id} | Update billing account
+*BillingApi* | [**paymentMethodsDelete**](docs/BillingApi.md#paymentmethodsdelete) | **DELETE** /billing/payment-methods/{billing_payment_method_id} | Delete a specific payment method
+*BillingApi* | [**paymentMethodsGet**](docs/BillingApi.md#paymentmethodsget) | **GET** /billing/payment-methods/{billing_payment_method_id} | Retrieve metadata for a specific payment method
+*BillingApi* | [**paymentMethodsUpdate**](docs/BillingApi.md#paymentmethodsupdate) | **PUT** /billing/payment-methods/{billing_payment_method_id} | Update a specific payment method
 *FunctionsApi* | [**functionsCreate**](docs/FunctionsApi.md#functionscreate) | **POST** /functions | Create function
 *FunctionsApi* | [**functionsDelete**](docs/FunctionsApi.md#functionsdelete) | **DELETE** /functions/{function_id} | Delete function
 *FunctionsApi* | [**functionsGet**](docs/FunctionsApi.md#functionsget) | **GET** /functions/{function_id} | Get function (latest revision)
@@ -110,6 +120,8 @@ Class | Method | HTTP request | Description
  - [AuthTokenPatch](docs/AuthTokenPatch.md)
  - [BadRequestResponse](docs/BadRequestResponse.md)
  - [BadRequestResponseFields](docs/BadRequestResponseFields.md)
+ - [BillingAccount](docs/BillingAccount.md)
+ - [BillingAccountBody](docs/BillingAccountBody.md)
  - [ConflictResponse](docs/ConflictResponse.md)
  - [DeletedResponse](docs/DeletedResponse.md)
  - [Function](docs/Function.md)
@@ -159,6 +171,11 @@ Class | Method | HTTP request | Description
  - [OrganisationsListPageParameter](docs/OrganisationsListPageParameter.md)
  - [PaginationLinks](docs/PaginationLinks.md)
  - [PaginationMeta](docs/PaginationMeta.md)
+ - [PaymentMethod](docs/PaymentMethod.md)
+ - [PaymentMethodAddress](docs/PaymentMethodAddress.md)
+ - [PaymentMethodBody](docs/PaymentMethodBody.md)
+ - [PaymentMethodCreate](docs/PaymentMethodCreate.md)
+ - [PaymentMethodCreateLinks](docs/PaymentMethodCreateLinks.md)
  - [ProjectBody](docs/ProjectBody.md)
  - [ProjectBodyPatch](docs/ProjectBodyPatch.md)
  - [ProjectResponse](docs/ProjectResponse.md)

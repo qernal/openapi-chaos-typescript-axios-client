@@ -102,6 +102,59 @@ export interface BadRequestResponseFields {
     'email'?: string;
 }
 /**
+ * Billing account
+ */
+export interface BillingAccount {
+    /**
+     * Unique identifier for the billing account
+     */
+    'id'?: string;
+    /**
+     * User ID associated with the billing account
+     */
+    'user_id'?: string;
+    /**
+     * Name of the billing account
+     */
+    'name'?: string;
+    /**
+     * Current state of the billing account - new accounts are created with state \"created\" until a card is added
+     */
+    'state'?: BillingAccountStateEnum;
+    /**
+     * Current balance of the billing account
+     */
+    'balance'?: number;
+    /**
+     * Timestamp when the billing account was created
+     */
+    'created_at'?: string;
+    /**
+     * Timestamp when the billing account was last updated
+     */
+    'updated_at'?: string;
+}
+
+export const BillingAccountStateEnum = {
+    created: 'created',
+    active: 'active',
+    inactive: 'inactive',
+    suspended: 'suspended',
+    deleted: 'deleted'
+} as const;
+
+export type BillingAccountStateEnum = typeof BillingAccountStateEnum[keyof typeof BillingAccountStateEnum];
+
+/**
+ * Billing account body
+ */
+export interface BillingAccountBody {
+    /**
+     * Name of the billing account
+     */
+    'name': string;
+}
+/**
  * Conflict Response
  */
 export interface ConflictResponse {
@@ -847,6 +900,193 @@ export interface PaginationMeta {
     'links': PaginationLinks;
 }
 /**
+ * Payment method
+ */
+export interface PaymentMethod {
+    /**
+     * Unique identifier for the payment method
+     */
+    'id'?: string;
+    /**
+     * Unique identifier for the billing account
+     */
+    'billing_account'?: string;
+    /**
+     * Name on the payment method
+     */
+    'name'?: string;
+    /**
+     * Current state of the payment method
+     */
+    'state'?: PaymentMethodStateEnum;
+    'address'?: PaymentMethodAddress;
+}
+
+export const PaymentMethodStateEnum = {
+    active: 'active',
+    inactive: 'inactive',
+    suspended: 'suspended',
+    deleted: 'deleted'
+} as const;
+
+export type PaymentMethodStateEnum = typeof PaymentMethodStateEnum[keyof typeof PaymentMethodStateEnum];
+
+/**
+ * Billing address associated with the payment method
+ */
+export interface PaymentMethodAddress {
+    /**
+     * Title of the cardholder
+     */
+    'title'?: string;
+    /**
+     * First name of the cardholder
+     */
+    'first_name'?: string;
+    /**
+     * Last name of the cardholder
+     */
+    'last_name'?: string;
+    /**
+     * Organisation name, if applicable
+     */
+    'organisation'?: string;
+    /**
+     * First line of the address
+     */
+    'address_line1'?: string;
+    /**
+     * Second line of the address, if applicable
+     */
+    'address_line2'?: string;
+    /**
+     * City of the address
+     */
+    'city'?: string;
+    /**
+     * County or state of the address
+     */
+    'county'?: string;
+    /**
+     * Postal or ZIP code of the address
+     */
+    'postal_code'?: string;
+    /**
+     * Country of the address (ISO 3166-1 alpha-2 code)
+     */
+    'country'?: string;
+    /**
+     * Contact phone number associated with the payment method
+     */
+    'phone_number'?: string;
+}
+/**
+ * Payment method body
+ */
+export interface PaymentMethodBody {
+    /**
+     * Name on the payment method
+     */
+    'name'?: string;
+    /**
+     * Title of the cardholder
+     */
+    'title'?: string;
+    /**
+     * First name of the cardholder
+     */
+    'first_name'?: string;
+    /**
+     * Last name of the cardholder
+     */
+    'last_name'?: string;
+    /**
+     * Organisation name, if applicable
+     */
+    'organisation'?: string;
+    /**
+     * First line of the address
+     */
+    'address_line1'?: string;
+    /**
+     * Second line of the address, if applicable
+     */
+    'address_line2'?: string;
+    /**
+     * City of the address
+     */
+    'city'?: string;
+    /**
+     * County or state of the address
+     */
+    'county'?: string;
+    /**
+     * Postal or ZIP code of the address
+     */
+    'postal_code'?: string;
+    /**
+     * Country of the address (ISO 3166-1 alpha-2 code)
+     */
+    'country'?: string;
+    /**
+     * Contact phone number associated with the payment method
+     */
+    'phone_number'?: string;
+}
+/**
+ * Payment method create response
+ */
+export interface PaymentMethodCreate {
+    /**
+     * Unique identifier for the payment method
+     */
+    'payment_method_id'?: string;
+    /**
+     * Unique identifier for the billing account
+     */
+    'billing_account_id'?: string;
+    /**
+     * Name on the payment method
+     */
+    'name'?: string;
+    /**
+     * Description of this order (e.g. payment authorisation)
+     */
+    'description'?: string;
+    /**
+     * Current state of the payment method
+     */
+    'state'?: PaymentMethodCreateStateEnum;
+    'links'?: PaymentMethodCreateLinks;
+}
+
+export const PaymentMethodCreateStateEnum = {
+    active: 'active',
+    inactive: 'inactive',
+    suspended: 'suspended',
+    deleted: 'deleted'
+} as const;
+
+export type PaymentMethodCreateStateEnum = typeof PaymentMethodCreateStateEnum[keyof typeof PaymentMethodCreateStateEnum];
+
+/**
+ * Links related to the payment method, such as checkout URL
+ */
+export interface PaymentMethodCreateLinks {
+    /**
+     * URL for the payment method checkout
+     */
+    'checkout'?: string;
+    /**
+     * Timestamp when the checkout link was created
+     */
+    'created_at'?: string;
+    /**
+     * Timestamp when the checkout link expires
+     */
+    'expires_at'?: string;
+}
+/**
  * Project body
  */
 export interface ProjectBody {
@@ -1111,6 +1351,801 @@ export type SecretResponsePayload = SecretMetaResponseCertificatePayload | Secre
 export interface UnauthorisedResponse {
     'message': string;
 }
+
+/**
+ * BillingApi - axios parameter creator
+ */
+export const BillingApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Create a new payment method associated with a specific billing account.
+         * @summary Create a new payment method for a billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {PaymentMethodBody} PaymentMethodBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountsPaymentMethodsCreate: async (billing_account_id: string, PaymentMethodBody: PaymentMethodBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'billing_account_id' is not null or undefined
+            assertParamExists('accountsPaymentMethodsCreate', 'billing_account_id', billing_account_id)
+            // verify required parameter 'PaymentMethodBody' is not null or undefined
+            assertParamExists('accountsPaymentMethodsCreate', 'PaymentMethodBody', PaymentMethodBody)
+            const localVarPath = `/billing/accounts/{billing_account_id}/payment-methods`
+                .replace(`{${"billing_account_id"}}`, encodeURIComponent(String(billing_account_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PaymentMethodBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve a list of payment methods associated with a specific billing account.
+         * @summary List payment methods for a billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountsPaymentMethodsList: async (billing_account_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'billing_account_id' is not null or undefined
+            assertParamExists('accountsPaymentMethodsList', 'billing_account_id', billing_account_id)
+            const localVarPath = `/billing/accounts/{billing_account_id}/payment-methods`
+                .replace(`{${"billing_account_id"}}`, encodeURIComponent(String(billing_account_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Create a new billing account
+         * @summary Create billing account
+         * @param {BillingAccountBody} BillingAccountBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsCreate: async (BillingAccountBody: BillingAccountBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'BillingAccountBody' is not null or undefined
+            assertParamExists('billingAccountsCreate', 'BillingAccountBody', BillingAccountBody)
+            const localVarPath = `/billing/accounts`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(BillingAccountBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Delete a specific billing account if it is no longer attached to any organizations or projects and has no outstanding balances or invoice payments.
+         * @summary Delete billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsDelete: async (billing_account_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'billing_account_id' is not null or undefined
+            assertParamExists('billingAccountsDelete', 'billing_account_id', billing_account_id)
+            const localVarPath = `/billing/accounts/{billing_account_id}`
+                .replace(`{${"billing_account_id"}}`, encodeURIComponent(String(billing_account_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get a specific billing account
+         * @summary Get billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsGet: async (billing_account_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'billing_account_id' is not null or undefined
+            assertParamExists('billingAccountsGet', 'billing_account_id', billing_account_id)
+            const localVarPath = `/billing/accounts/{billing_account_id}`
+                .replace(`{${"billing_account_id"}}`, encodeURIComponent(String(billing_account_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List all billing accounts for this user, paginated
+         * @summary List billing accounts
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/billing/accounts`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Update the details of a specific billing account.
+         * @summary Update billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {BillingAccountBody} BillingAccountBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsUpdate: async (billing_account_id: string, BillingAccountBody: BillingAccountBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'billing_account_id' is not null or undefined
+            assertParamExists('billingAccountsUpdate', 'billing_account_id', billing_account_id)
+            // verify required parameter 'BillingAccountBody' is not null or undefined
+            assertParamExists('billingAccountsUpdate', 'BillingAccountBody', BillingAccountBody)
+            const localVarPath = `/billing/accounts/{billing_account_id}`
+                .replace(`{${"billing_account_id"}}`, encodeURIComponent(String(billing_account_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(BillingAccountBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Remove a specific payment method entirely if there are no associated resources and no pending partial invoices.
+         * @summary Delete a specific payment method
+         * @param {string} billing_payment_method_id Payment method ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        paymentMethodsDelete: async (billing_payment_method_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'billing_payment_method_id' is not null or undefined
+            assertParamExists('paymentMethodsDelete', 'billing_payment_method_id', billing_payment_method_id)
+            const localVarPath = `/billing/payment-methods/{billing_payment_method_id}`
+                .replace(`{${"billing_payment_method_id"}}`, encodeURIComponent(String(billing_payment_method_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get metadata (such as state, active, declined, cancelled, etc.) for a specific payment method.
+         * @summary Retrieve metadata for a specific payment method
+         * @param {string} billing_payment_method_id Payment method ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        paymentMethodsGet: async (billing_payment_method_id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'billing_payment_method_id' is not null or undefined
+            assertParamExists('paymentMethodsGet', 'billing_payment_method_id', billing_payment_method_id)
+            const localVarPath = `/billing/payment-methods/{billing_payment_method_id}`
+                .replace(`{${"billing_payment_method_id"}}`, encodeURIComponent(String(billing_payment_method_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Update the details of a specific payment method.
+         * @summary Update a specific payment method
+         * @param {string} billing_payment_method_id Payment method ID reference
+         * @param {PaymentMethodBody} PaymentMethodBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        paymentMethodsUpdate: async (billing_payment_method_id: string, PaymentMethodBody: PaymentMethodBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'billing_payment_method_id' is not null or undefined
+            assertParamExists('paymentMethodsUpdate', 'billing_payment_method_id', billing_payment_method_id)
+            // verify required parameter 'PaymentMethodBody' is not null or undefined
+            assertParamExists('paymentMethodsUpdate', 'PaymentMethodBody', PaymentMethodBody)
+            const localVarPath = `/billing/payment-methods/{billing_payment_method_id}`
+                .replace(`{${"billing_payment_method_id"}}`, encodeURIComponent(String(billing_payment_method_id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookie required
+
+            // authentication token required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(PaymentMethodBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * BillingApi - functional programming interface
+ */
+export const BillingApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = BillingApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Create a new payment method associated with a specific billing account.
+         * @summary Create a new payment method for a billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {PaymentMethodBody} PaymentMethodBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async accountsPaymentMethodsCreate(billing_account_id: string, PaymentMethodBody: PaymentMethodBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentMethodCreate>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountsPaymentMethodsCreate(billing_account_id, PaymentMethodBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.accountsPaymentMethodsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve a list of payment methods associated with a specific billing account.
+         * @summary List payment methods for a billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async accountsPaymentMethodsList(billing_account_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PaymentMethod>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.accountsPaymentMethodsList(billing_account_id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.accountsPaymentMethodsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Create a new billing account
+         * @summary Create billing account
+         * @param {BillingAccountBody} BillingAccountBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async billingAccountsCreate(BillingAccountBody: BillingAccountBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BillingAccount>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.billingAccountsCreate(BillingAccountBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.billingAccountsCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Delete a specific billing account if it is no longer attached to any organizations or projects and has no outstanding balances or invoice payments.
+         * @summary Delete billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async billingAccountsDelete(billing_account_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeletedResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.billingAccountsDelete(billing_account_id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.billingAccountsDelete']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Get a specific billing account
+         * @summary Get billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async billingAccountsGet(billing_account_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BillingAccount>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.billingAccountsGet(billing_account_id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.billingAccountsGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * List all billing accounts for this user, paginated
+         * @summary List billing accounts
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async billingAccountsList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BillingAccount>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.billingAccountsList(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.billingAccountsList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Update the details of a specific billing account.
+         * @summary Update billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {BillingAccountBody} BillingAccountBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async billingAccountsUpdate(billing_account_id: string, BillingAccountBody: BillingAccountBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BillingAccount>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.billingAccountsUpdate(billing_account_id, BillingAccountBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.billingAccountsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Remove a specific payment method entirely if there are no associated resources and no pending partial invoices.
+         * @summary Delete a specific payment method
+         * @param {string} billing_payment_method_id Payment method ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async paymentMethodsDelete(billing_payment_method_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeletedResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.paymentMethodsDelete(billing_payment_method_id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.paymentMethodsDelete']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Get metadata (such as state, active, declined, cancelled, etc.) for a specific payment method.
+         * @summary Retrieve metadata for a specific payment method
+         * @param {string} billing_payment_method_id Payment method ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async paymentMethodsGet(billing_payment_method_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentMethod>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.paymentMethodsGet(billing_payment_method_id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.paymentMethodsGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Update the details of a specific payment method.
+         * @summary Update a specific payment method
+         * @param {string} billing_payment_method_id Payment method ID reference
+         * @param {PaymentMethodBody} PaymentMethodBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async paymentMethodsUpdate(billing_payment_method_id: string, PaymentMethodBody: PaymentMethodBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentMethod>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.paymentMethodsUpdate(billing_payment_method_id, PaymentMethodBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BillingApi.paymentMethodsUpdate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * BillingApi - factory interface
+ */
+export const BillingApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = BillingApiFp(configuration)
+    return {
+        /**
+         * Create a new payment method associated with a specific billing account.
+         * @summary Create a new payment method for a billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {PaymentMethodBody} PaymentMethodBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountsPaymentMethodsCreate(billing_account_id: string, PaymentMethodBody: PaymentMethodBody, options?: RawAxiosRequestConfig): AxiosPromise<PaymentMethodCreate> {
+            return localVarFp.accountsPaymentMethodsCreate(billing_account_id, PaymentMethodBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve a list of payment methods associated with a specific billing account.
+         * @summary List payment methods for a billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        accountsPaymentMethodsList(billing_account_id: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PaymentMethod>> {
+            return localVarFp.accountsPaymentMethodsList(billing_account_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Create a new billing account
+         * @summary Create billing account
+         * @param {BillingAccountBody} BillingAccountBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsCreate(BillingAccountBody: BillingAccountBody, options?: RawAxiosRequestConfig): AxiosPromise<BillingAccount> {
+            return localVarFp.billingAccountsCreate(BillingAccountBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Delete a specific billing account if it is no longer attached to any organizations or projects and has no outstanding balances or invoice payments.
+         * @summary Delete billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsDelete(billing_account_id: string, options?: RawAxiosRequestConfig): AxiosPromise<DeletedResponse> {
+            return localVarFp.billingAccountsDelete(billing_account_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Get a specific billing account
+         * @summary Get billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsGet(billing_account_id: string, options?: RawAxiosRequestConfig): AxiosPromise<BillingAccount> {
+            return localVarFp.billingAccountsGet(billing_account_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List all billing accounts for this user, paginated
+         * @summary List billing accounts
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsList(options?: RawAxiosRequestConfig): AxiosPromise<Array<BillingAccount>> {
+            return localVarFp.billingAccountsList(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Update the details of a specific billing account.
+         * @summary Update billing account
+         * @param {string} billing_account_id Billing account ID reference
+         * @param {BillingAccountBody} BillingAccountBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        billingAccountsUpdate(billing_account_id: string, BillingAccountBody: BillingAccountBody, options?: RawAxiosRequestConfig): AxiosPromise<BillingAccount> {
+            return localVarFp.billingAccountsUpdate(billing_account_id, BillingAccountBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Remove a specific payment method entirely if there are no associated resources and no pending partial invoices.
+         * @summary Delete a specific payment method
+         * @param {string} billing_payment_method_id Payment method ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        paymentMethodsDelete(billing_payment_method_id: string, options?: RawAxiosRequestConfig): AxiosPromise<DeletedResponse> {
+            return localVarFp.paymentMethodsDelete(billing_payment_method_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Get metadata (such as state, active, declined, cancelled, etc.) for a specific payment method.
+         * @summary Retrieve metadata for a specific payment method
+         * @param {string} billing_payment_method_id Payment method ID reference
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        paymentMethodsGet(billing_payment_method_id: string, options?: RawAxiosRequestConfig): AxiosPromise<PaymentMethod> {
+            return localVarFp.paymentMethodsGet(billing_payment_method_id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Update the details of a specific payment method.
+         * @summary Update a specific payment method
+         * @param {string} billing_payment_method_id Payment method ID reference
+         * @param {PaymentMethodBody} PaymentMethodBody Create/Update any field
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        paymentMethodsUpdate(billing_payment_method_id: string, PaymentMethodBody: PaymentMethodBody, options?: RawAxiosRequestConfig): AxiosPromise<PaymentMethod> {
+            return localVarFp.paymentMethodsUpdate(billing_payment_method_id, PaymentMethodBody, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * BillingApi - object-oriented interface
+ */
+export class BillingApi extends BaseAPI {
+    /**
+     * Create a new payment method associated with a specific billing account.
+     * @summary Create a new payment method for a billing account
+     * @param {string} billing_account_id Billing account ID reference
+     * @param {PaymentMethodBody} PaymentMethodBody Create/Update any field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public accountsPaymentMethodsCreate(billing_account_id: string, PaymentMethodBody: PaymentMethodBody, options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).accountsPaymentMethodsCreate(billing_account_id, PaymentMethodBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve a list of payment methods associated with a specific billing account.
+     * @summary List payment methods for a billing account
+     * @param {string} billing_account_id Billing account ID reference
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public accountsPaymentMethodsList(billing_account_id: string, options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).accountsPaymentMethodsList(billing_account_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create a new billing account
+     * @summary Create billing account
+     * @param {BillingAccountBody} BillingAccountBody Create/Update any field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public billingAccountsCreate(BillingAccountBody: BillingAccountBody, options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).billingAccountsCreate(BillingAccountBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Delete a specific billing account if it is no longer attached to any organizations or projects and has no outstanding balances or invoice payments.
+     * @summary Delete billing account
+     * @param {string} billing_account_id Billing account ID reference
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public billingAccountsDelete(billing_account_id: string, options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).billingAccountsDelete(billing_account_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Get a specific billing account
+     * @summary Get billing account
+     * @param {string} billing_account_id Billing account ID reference
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public billingAccountsGet(billing_account_id: string, options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).billingAccountsGet(billing_account_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List all billing accounts for this user, paginated
+     * @summary List billing accounts
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public billingAccountsList(options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).billingAccountsList(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Update the details of a specific billing account.
+     * @summary Update billing account
+     * @param {string} billing_account_id Billing account ID reference
+     * @param {BillingAccountBody} BillingAccountBody Create/Update any field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public billingAccountsUpdate(billing_account_id: string, BillingAccountBody: BillingAccountBody, options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).billingAccountsUpdate(billing_account_id, BillingAccountBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Remove a specific payment method entirely if there are no associated resources and no pending partial invoices.
+     * @summary Delete a specific payment method
+     * @param {string} billing_payment_method_id Payment method ID reference
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public paymentMethodsDelete(billing_payment_method_id: string, options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).paymentMethodsDelete(billing_payment_method_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Get metadata (such as state, active, declined, cancelled, etc.) for a specific payment method.
+     * @summary Retrieve metadata for a specific payment method
+     * @param {string} billing_payment_method_id Payment method ID reference
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public paymentMethodsGet(billing_payment_method_id: string, options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).paymentMethodsGet(billing_payment_method_id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Update the details of a specific payment method.
+     * @summary Update a specific payment method
+     * @param {string} billing_payment_method_id Payment method ID reference
+     * @param {PaymentMethodBody} PaymentMethodBody Create/Update any field
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public paymentMethodsUpdate(billing_payment_method_id: string, PaymentMethodBody: PaymentMethodBody, options?: RawAxiosRequestConfig) {
+        return BillingApiFp(this.configuration).paymentMethodsUpdate(billing_payment_method_id, PaymentMethodBody, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
 
 /**
  * FunctionsApi - axios parameter creator
