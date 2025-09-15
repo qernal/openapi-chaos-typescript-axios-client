@@ -11,7 +11,7 @@ All URIs are relative to *https://chaos.qernal.com/v1*
 |[**projectsSecretsUpdate**](#projectssecretsupdate) | **PUT** /projects/{project_id}/secrets/{secret_name} | Update project secret|
 
 # **projectsSecretsCreate**
-> SecretResponse projectsSecretsCreate(SecretBody)
+> Secret projectsSecretsCreate(SecretBody)
 
 Create a new project secret
 
@@ -46,7 +46,7 @@ const { status, data } = await apiInstance.projectsSecretsCreate(
 
 ### Return type
 
-**SecretResponse**
+**Secret**
 
 ### Authorization
 
@@ -126,7 +126,7 @@ const { status, data } = await apiInstance.projectsSecretsDelete(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **projectsSecretsGet**
-> SecretMetaResponse projectsSecretsGet()
+> SecretMeta projectsSecretsGet()
 
 Get a specific project
 
@@ -160,7 +160,7 @@ const { status, data } = await apiInstance.projectsSecretsGet(
 
 ### Return type
 
-**SecretMetaResponse**
+**SecretMeta**
 
 ### Authorization
 
@@ -182,7 +182,7 @@ const { status, data } = await apiInstance.projectsSecretsGet(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **projectsSecretsList**
-> ListSecretResponse projectsSecretsList()
+> Array<Secret> projectsSecretsList()
 
 List project secrets of a specific type
 
@@ -220,7 +220,7 @@ const { status, data } = await apiInstance.projectsSecretsList(
 
 ### Return type
 
-**ListSecretResponse**
+**Array<Secret>**
 
 ### Authorization
 
@@ -235,14 +235,14 @@ const { status, data } = await apiInstance.projectsSecretsList(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | List secrets |  -  |
+|**200** | List secrets |  * Pagination-Total-Count -  <br>  * Pagination-Page-Size -  <br>  * Pagination-Page-After -  <br>  * Pagination-Page-Before -  <br>  * Pagination-Total-Pages -  <br>  * Link -  <br>  |
 |**404** | Resource Not Found |  -  |
 |**403** | Unauthorised |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **projectsSecretsUpdate**
-> SecretResponse projectsSecretsUpdate(SecretBodyPatch)
+> Secret projectsSecretsUpdate(SecretBodyPatch)
 
 Update project
 
@@ -280,7 +280,7 @@ const { status, data } = await apiInstance.projectsSecretsUpdate(
 
 ### Return type
 
-**SecretResponse**
+**Secret**
 
 ### Authorization
 

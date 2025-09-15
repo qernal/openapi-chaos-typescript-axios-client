@@ -178,7 +178,7 @@ const { status, data } = await apiInstance.projectsHostsGet(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **projectsHostsList**
-> ListHosts projectsHostsList()
+> Array<Host> projectsHostsList()
 
 
 ### Example
@@ -212,7 +212,7 @@ const { status, data } = await apiInstance.projectsHostsList(
 
 ### Return type
 
-**ListHosts**
+**Array<Host>**
 
 ### Authorization
 
@@ -227,7 +227,7 @@ const { status, data } = await apiInstance.projectsHostsList(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | List of project hosts |  -  |
+|**200** | List of project hosts |  * Pagination-Total-Count -  <br>  * Pagination-Page-Size -  <br>  * Pagination-Page-After -  <br>  * Pagination-Page-Before -  <br>  * Pagination-Total-Pages -  <br>  * Link -  <br>  |
 |**404** | Resource Not Found |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

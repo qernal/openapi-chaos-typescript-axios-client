@@ -14,7 +14,7 @@ All URIs are relative to *https://chaos.qernal.com/v1*
 |[**projectsUpdate**](#projectsupdate) | **PUT** /projects/{project_id} | Update project|
 
 # **organisationsProjectsList**
-> ListProjectResponse organisationsProjectsList()
+> Array<Project> organisationsProjectsList()
 
 Get all the projects linked to a specific organisation
 
@@ -52,7 +52,7 @@ const { status, data } = await apiInstance.organisationsProjectsList(
 
 ### Return type
 
-**ListProjectResponse**
+**Array<Project>**
 
 ### Authorization
 
@@ -67,14 +67,14 @@ const { status, data } = await apiInstance.organisationsProjectsList(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | List projects |  -  |
+|**200** | List projects |  * Pagination-Total-Count -  <br>  * Pagination-Page-Size -  <br>  * Pagination-Page-After -  <br>  * Pagination-Page-Before -  <br>  * Pagination-Total-Pages -  <br>  * Link -  <br>  |
 |**404** | Resource Not Found |  -  |
 |**403** | Unauthorised |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **projectsCreate**
-> ProjectResponse projectsCreate()
+> Project projectsCreate()
 
 Create a new project
 
@@ -106,7 +106,7 @@ const { status, data } = await apiInstance.projectsCreate(
 
 ### Return type
 
-**ProjectResponse**
+**Project**
 
 ### Authorization
 
@@ -183,7 +183,7 @@ const { status, data } = await apiInstance.projectsDelete(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **projectsGet**
-> ProjectResponse projectsGet()
+> Project projectsGet()
 
 Get a specific project
 
@@ -214,7 +214,7 @@ const { status, data } = await apiInstance.projectsGet(
 
 ### Return type
 
-**ProjectResponse**
+**Project**
 
 ### Authorization
 
@@ -236,7 +236,7 @@ const { status, data } = await apiInstance.projectsGet(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **projectsList**
-> ListProjectResponse projectsList()
+> Array<Project> projectsList()
 
 Get all projects for this user, paginated
 
@@ -271,7 +271,7 @@ const { status, data } = await apiInstance.projectsList(
 
 ### Return type
 
-**ListProjectResponse**
+**Array<Project>**
 
 ### Authorization
 
@@ -286,7 +286,7 @@ const { status, data } = await apiInstance.projectsList(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | List projects |  -  |
+|**200** | List projects |  * Pagination-Total-Count -  <br>  * Pagination-Page-Size -  <br>  * Pagination-Page-After -  <br>  * Pagination-Page-Before -  <br>  * Pagination-Total-Pages -  <br>  * Link -  <br>  |
 |**403** | Unauthorised |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -401,7 +401,7 @@ const { status, data } = await apiInstance.projectsQuotasList(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **projectsUpdate**
-> ProjectResponse projectsUpdate()
+> Project projectsUpdate()
 
 Update project
 
@@ -436,7 +436,7 @@ const { status, data } = await apiInstance.projectsUpdate(
 
 ### Return type
 
-**ProjectResponse**
+**Project**
 
 ### Authorization
 

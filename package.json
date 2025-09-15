@@ -1,6 +1,6 @@
 {
   "name": "@qernal/chaos-client",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "OpenAPI client for @qernal/chaos-client",
   "author": "OpenAPI-Generator Contributors",
   "repository": {

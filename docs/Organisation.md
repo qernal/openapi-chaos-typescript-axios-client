@@ -1,6 +1,6 @@
-# OrganisationResponse
+# Organisation
 
-Organisation response
+Organisation response/object
 
 ## Properties
 
@@ -14,9 +14,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrganisationResponse } from '@qernal/chaos-client';
+import { Organisation } from '@qernal/chaos-client';
 
-const instance: OrganisationResponse = {
+const instance: Organisation = {
     id,
     user_id,
     name,

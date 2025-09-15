@@ -168,7 +168,7 @@ const { status, data } = await apiInstance.authTokensGet(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **authTokensList**
-> ListAuthTokens authTokensList()
+> Array<AuthTokenMeta> authTokensList()
 
 
 ### Example
@@ -199,7 +199,7 @@ const { status, data } = await apiInstance.authTokensList(
 
 ### Return type
 
-**ListAuthTokens**
+**Array<AuthTokenMeta>**
 
 ### Authorization
 
@@ -214,7 +214,7 @@ const { status, data } = await apiInstance.authTokensList(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | List of auth token meta |  -  |
+|**200** | List of auth token meta |  * Pagination-Total-Count -  <br>  * Pagination-Page-Size -  <br>  * Pagination-Page-After -  <br>  * Pagination-Page-Before -  <br>  * Pagination-Total-Pages -  <br>  * Link -  <br>  |
 |**404** | Resource Not Found |  -  |
 |**400** | Resource Bad Request |  -  |
 

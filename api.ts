@@ -498,25 +498,11 @@ export type HostVerificationStatus = typeof HostVerificationStatus[keyof typeof 
 
 
 /**
- * List of auth tokens
- */
-export interface ListAuthTokens {
-    'meta': PaginationMeta;
-    'data': Array<AuthTokenMeta>;
-}
-/**
  * List of functions
  */
 export interface ListFunction {
     'meta': PaginationMeta;
     'data': Array<Function>;
-}
-/**
- * List of projects hosts
- */
-export interface ListHosts {
-    'meta': PaginationMeta;
-    'data': Array<Host>;
 }
 /**
  * List of log
@@ -526,32 +512,11 @@ export interface ListLogResponse {
     'data': Array<Log>;
 }
 /**
- * List organisations schema
- */
-export interface ListOrganisationResponse {
-    'meta': PaginationMeta;
-    'data': Array<OrganisationResponse>;
-}
-/**
- * List of projects
- */
-export interface ListProjectResponse {
-    'meta': PaginationMeta;
-    'data': Array<ProjectResponse>;
-}
-/**
  * List of providers
  */
 export interface ListProviderResponse {
     'meta': PaginationMeta;
     'data': Array<Provider>;
-}
-/**
- * List of secrets
- */
-export interface ListSecretResponse {
-    'meta': PaginationMeta;
-    'data': Array<SecretMetaResponse>;
 }
 /**
  * Location of allowed clusters
@@ -842,18 +807,9 @@ export interface NotFoundResponse {
     'message': string;
 }
 /**
- * Organisation body
+ * Organisation response/object
  */
-export interface OrganisationBody {
-    /**
-     * Organisation name
-     */
-    'name': string;
-}
-/**
- * Organisation response
- */
-export interface OrganisationResponse {
+export interface Organisation {
     /**
      * Organisation id
      */
@@ -867,6 +823,15 @@ export interface OrganisationResponse {
      */
     'name': string;
     'date': ModelDate;
+}
+/**
+ * Organisation body
+ */
+export interface OrganisationBody {
+    /**
+     * Organisation name
+     */
+    'name': string;
 }
 export interface OrganisationsListPageParameter {
     /**
@@ -1087,6 +1052,24 @@ export interface PaymentMethodCreateLinks {
     'expires_at'?: string;
 }
 /**
+ * Project response/object
+ */
+export interface Project {
+    /**
+     * Project id
+     */
+    'id': string;
+    /**
+     * Organisation id
+     */
+    'org_id': string;
+    /**
+     * Project name
+     */
+    'name': string;
+    'date': ModelDate;
+}
+/**
  * Project body
  */
 export interface ProjectBody {
@@ -1111,24 +1094,6 @@ export interface ProjectBodyPatch {
      * Project name
      */
     'name'?: string;
-}
-/**
- * Project response
- */
-export interface ProjectResponse {
-    /**
-     * Project id
-     */
-    'id': string;
-    /**
-     * Organisation id
-     */
-    'org_id': string;
-    /**
-     * Project name
-     */
-    'name': string;
-    'date': ModelDate;
 }
 /**
  * List of providers
@@ -1174,6 +1139,24 @@ export interface Quota {
      */
     'type': string;
 }
+/**
+ * Secret response/object
+ */
+export interface Secret {
+    /**
+     * Secret name
+     */
+    'name': string;
+    'type': SecretCreateType;
+    'payload'?: SecretPayload;
+    /**
+     * Secret revision
+     */
+    'revision': number;
+    'date': ModelDate;
+}
+
+
 /**
  * Secret body
  */
@@ -1246,15 +1229,15 @@ export interface SecretEnvironment {
     'environment_value': string;
 }
 /**
- * Secret metadata response
+ * Secret metadata response/object
  */
-export interface SecretMetaResponse {
+export interface SecretMeta {
     /**
      * Secret name
      */
     'name': string;
     'type': SecretMetaType;
-    'payload'?: SecretMetaResponsePayload;
+    'payload'?: SecretMetaPayload;
     /**
      * Secret revision
      */
@@ -1266,7 +1249,7 @@ export interface SecretMetaResponse {
 /**
  * Secret metadata certificate payload
  */
-export interface SecretMetaResponseCertificatePayload {
+export interface SecretMetaCertificatePayload {
     /**
      * Public SSL certificate
      */
@@ -1275,21 +1258,21 @@ export interface SecretMetaResponseCertificatePayload {
 /**
  * DEK secret, `type: dek`
  */
-export interface SecretMetaResponseDek {
+export interface SecretMetaDek {
     /**
      * Base64 encoded DEK public key
      */
     'public': string;
 }
 /**
- * @type SecretMetaResponsePayload
+ * @type SecretMetaPayload
  */
-export type SecretMetaResponsePayload = SecretMetaResponseCertificatePayload | SecretMetaResponseDek | SecretMetaResponseRegistryPayload;
+export type SecretMetaPayload = SecretMetaCertificatePayload | SecretMetaDek | SecretMetaRegistryPayload;
 
 /**
  * Secret metadata registry payload
  */
-export interface SecretMetaResponseRegistryPayload {
+export interface SecretMetaRegistryPayload {
     /**
      * Private registry domain/location, when using the private docker hub registry sepcify `docker.io` > Without http scheme 
      */
@@ -1310,6 +1293,11 @@ export type SecretMetaType = typeof SecretMetaType[keyof typeof SecretMetaType];
 
 
 /**
+ * @type SecretPayload
+ */
+export type SecretPayload = SecretMetaCertificatePayload | SecretMetaRegistryPayload;
+
+/**
  * Encrypted private container registry, `type: registry`
  */
 export interface SecretRegistry {
@@ -1322,29 +1310,6 @@ export interface SecretRegistry {
      */
     'registry_value': string;
 }
-/**
- * Secret response
- */
-export interface SecretResponse {
-    /**
-     * Secret name
-     */
-    'name': string;
-    'type': SecretCreateType;
-    'payload'?: SecretResponsePayload;
-    /**
-     * Secret revision
-     */
-    'revision': number;
-    'date': ModelDate;
-}
-
-
-/**
- * @type SecretResponsePayload
- */
-export type SecretResponsePayload = SecretMetaResponseCertificatePayload | SecretMetaResponseRegistryPayload;
-
 /**
  * Unauthorised
  */
@@ -3075,7 +3040,7 @@ export const HostsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsHostsList(project_id: string, page?: OrganisationsListPageParameter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListHosts>> {
+        async projectsHostsList(project_id: string, page?: OrganisationsListPageParameter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Host>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsHostsList(project_id, page, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['HostsApi.projectsHostsList']?.[localVarOperationServerIndex]?.url;
@@ -3160,7 +3125,7 @@ export const HostsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsHostsList(project_id: string, page?: OrganisationsListPageParameter, options?: RawAxiosRequestConfig): AxiosPromise<ListHosts> {
+        projectsHostsList(project_id: string, page?: OrganisationsListPageParameter, options?: RawAxiosRequestConfig): AxiosPromise<Array<Host>> {
             return localVarFp.projectsHostsList(project_id, page, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3889,7 +3854,7 @@ export const OrganisationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organisationsCreate(OrganisationBody?: OrganisationBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganisationResponse>> {
+        async organisationsCreate(OrganisationBody?: OrganisationBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Organisation>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organisationsCreate(OrganisationBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganisationsApi.organisationsCreate']?.[localVarOperationServerIndex]?.url;
@@ -3915,7 +3880,7 @@ export const OrganisationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organisationsGet(organisation_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganisationResponse>> {
+        async organisationsGet(organisation_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Organisation>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organisationsGet(organisation_id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganisationsApi.organisationsGet']?.[localVarOperationServerIndex]?.url;
@@ -3929,7 +3894,7 @@ export const OrganisationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organisationsList(page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListOrganisationResponse>> {
+        async organisationsList(page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Organisation>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organisationsList(page, f_name, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganisationsApi.organisationsList']?.[localVarOperationServerIndex]?.url;
@@ -3970,7 +3935,7 @@ export const OrganisationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organisationsUpdate(organisation_id: string, OrganisationBody?: OrganisationBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganisationResponse>> {
+        async organisationsUpdate(organisation_id: string, OrganisationBody?: OrganisationBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Organisation>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organisationsUpdate(organisation_id, OrganisationBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganisationsApi.organisationsUpdate']?.[localVarOperationServerIndex]?.url;
@@ -3992,7 +3957,7 @@ export const OrganisationsApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organisationsCreate(OrganisationBody?: OrganisationBody, options?: RawAxiosRequestConfig): AxiosPromise<OrganisationResponse> {
+        organisationsCreate(OrganisationBody?: OrganisationBody, options?: RawAxiosRequestConfig): AxiosPromise<Organisation> {
             return localVarFp.organisationsCreate(OrganisationBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -4012,7 +3977,7 @@ export const OrganisationsApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organisationsGet(organisation_id: string, options?: RawAxiosRequestConfig): AxiosPromise<OrganisationResponse> {
+        organisationsGet(organisation_id: string, options?: RawAxiosRequestConfig): AxiosPromise<Organisation> {
             return localVarFp.organisationsGet(organisation_id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -4023,7 +3988,7 @@ export const OrganisationsApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organisationsList(page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): AxiosPromise<ListOrganisationResponse> {
+        organisationsList(page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<Organisation>> {
             return localVarFp.organisationsList(page, f_name, options).then((request) => request(axios, basePath));
         },
         /**
@@ -4055,7 +4020,7 @@ export const OrganisationsApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organisationsUpdate(organisation_id: string, OrganisationBody?: OrganisationBody, options?: RawAxiosRequestConfig): AxiosPromise<OrganisationResponse> {
+        organisationsUpdate(organisation_id: string, OrganisationBody?: OrganisationBody, options?: RawAxiosRequestConfig): AxiosPromise<Organisation> {
             return localVarFp.organisationsUpdate(organisation_id, OrganisationBody, options).then((request) => request(axios, basePath));
         },
     };
@@ -4519,7 +4484,7 @@ export const ProjectsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organisationsProjectsList(organisation_id: string, page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListProjectResponse>> {
+        async organisationsProjectsList(organisation_id: string, page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Project>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organisationsProjectsList(organisation_id, page, f_name, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectsApi.organisationsProjectsList']?.[localVarOperationServerIndex]?.url;
@@ -4532,7 +4497,7 @@ export const ProjectsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsCreate(ProjectBody?: ProjectBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectResponse>> {
+        async projectsCreate(ProjectBody?: ProjectBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Project>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsCreate(ProjectBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectsApi.projectsCreate']?.[localVarOperationServerIndex]?.url;
@@ -4558,7 +4523,7 @@ export const ProjectsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsGet(project_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectResponse>> {
+        async projectsGet(project_id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Project>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsGet(project_id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectsApi.projectsGet']?.[localVarOperationServerIndex]?.url;
@@ -4572,7 +4537,7 @@ export const ProjectsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsList(page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListProjectResponse>> {
+        async projectsList(page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Project>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsList(page, f_name, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectsApi.projectsList']?.[localVarOperationServerIndex]?.url;
@@ -4613,7 +4578,7 @@ export const ProjectsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsUpdate(project_id: string, ProjectBodyPatch?: ProjectBodyPatch, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectResponse>> {
+        async projectsUpdate(project_id: string, ProjectBodyPatch?: ProjectBodyPatch, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Project>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsUpdate(project_id, ProjectBodyPatch, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectsApi.projectsUpdate']?.[localVarOperationServerIndex]?.url;
@@ -4637,7 +4602,7 @@ export const ProjectsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organisationsProjectsList(organisation_id: string, page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): AxiosPromise<ListProjectResponse> {
+        organisationsProjectsList(organisation_id: string, page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<Project>> {
             return localVarFp.organisationsProjectsList(organisation_id, page, f_name, options).then((request) => request(axios, basePath));
         },
         /**
@@ -4647,7 +4612,7 @@ export const ProjectsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsCreate(ProjectBody?: ProjectBody, options?: RawAxiosRequestConfig): AxiosPromise<ProjectResponse> {
+        projectsCreate(ProjectBody?: ProjectBody, options?: RawAxiosRequestConfig): AxiosPromise<Project> {
             return localVarFp.projectsCreate(ProjectBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -4667,7 +4632,7 @@ export const ProjectsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsGet(project_id: string, options?: RawAxiosRequestConfig): AxiosPromise<ProjectResponse> {
+        projectsGet(project_id: string, options?: RawAxiosRequestConfig): AxiosPromise<Project> {
             return localVarFp.projectsGet(project_id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -4678,7 +4643,7 @@ export const ProjectsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsList(page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): AxiosPromise<ListProjectResponse> {
+        projectsList(page?: OrganisationsListPageParameter, f_name?: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<Project>> {
             return localVarFp.projectsList(page, f_name, options).then((request) => request(axios, basePath));
         },
         /**
@@ -4710,7 +4675,7 @@ export const ProjectsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsUpdate(project_id: string, ProjectBodyPatch?: ProjectBodyPatch, options?: RawAxiosRequestConfig): AxiosPromise<ProjectResponse> {
+        projectsUpdate(project_id: string, ProjectBodyPatch?: ProjectBodyPatch, options?: RawAxiosRequestConfig): AxiosPromise<Project> {
             return localVarFp.projectsUpdate(project_id, ProjectBodyPatch, options).then((request) => request(axios, basePath));
         },
     };
@@ -5682,7 +5647,7 @@ export const SecretsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsSecretsCreate(project_id: string, SecretBody: SecretBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SecretResponse>> {
+        async projectsSecretsCreate(project_id: string, SecretBody: SecretBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Secret>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsSecretsCreate(project_id, SecretBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SecretsApi.projectsSecretsCreate']?.[localVarOperationServerIndex]?.url;
@@ -5710,7 +5675,7 @@ export const SecretsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsSecretsGet(project_id: string, secret_name: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SecretMetaResponse>> {
+        async projectsSecretsGet(project_id: string, secret_name: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SecretMeta>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsSecretsGet(project_id, secret_name, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SecretsApi.projectsSecretsGet']?.[localVarOperationServerIndex]?.url;
@@ -5725,7 +5690,7 @@ export const SecretsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretMetaType, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListSecretResponse>> {
+        async projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretMetaType, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Secret>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsSecretsList(project_id, page, secret_type, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SecretsApi.projectsSecretsList']?.[localVarOperationServerIndex]?.url;
@@ -5740,7 +5705,7 @@ export const SecretsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsSecretsUpdate(project_id: string, secret_name: string, SecretBodyPatch: SecretBodyPatch, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SecretResponse>> {
+        async projectsSecretsUpdate(project_id: string, secret_name: string, SecretBodyPatch: SecretBodyPatch, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Secret>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsSecretsUpdate(project_id, secret_name, SecretBodyPatch, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SecretsApi.projectsSecretsUpdate']?.[localVarOperationServerIndex]?.url;
@@ -5763,7 +5728,7 @@ export const SecretsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsSecretsCreate(project_id: string, SecretBody: SecretBody, options?: RawAxiosRequestConfig): AxiosPromise<SecretResponse> {
+        projectsSecretsCreate(project_id: string, SecretBody: SecretBody, options?: RawAxiosRequestConfig): AxiosPromise<Secret> {
             return localVarFp.projectsSecretsCreate(project_id, SecretBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -5785,7 +5750,7 @@ export const SecretsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsSecretsGet(project_id: string, secret_name: string, options?: RawAxiosRequestConfig): AxiosPromise<SecretMetaResponse> {
+        projectsSecretsGet(project_id: string, secret_name: string, options?: RawAxiosRequestConfig): AxiosPromise<SecretMeta> {
             return localVarFp.projectsSecretsGet(project_id, secret_name, options).then((request) => request(axios, basePath));
         },
         /**
@@ -5797,7 +5762,7 @@ export const SecretsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretMetaType, options?: RawAxiosRequestConfig): AxiosPromise<ListSecretResponse> {
+        projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretMetaType, options?: RawAxiosRequestConfig): AxiosPromise<Array<Secret>> {
             return localVarFp.projectsSecretsList(project_id, page, secret_type, options).then((request) => request(axios, basePath));
         },
         /**
@@ -5809,7 +5774,7 @@ export const SecretsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsSecretsUpdate(project_id: string, secret_name: string, SecretBodyPatch: SecretBodyPatch, options?: RawAxiosRequestConfig): AxiosPromise<SecretResponse> {
+        projectsSecretsUpdate(project_id: string, secret_name: string, SecretBodyPatch: SecretBodyPatch, options?: RawAxiosRequestConfig): AxiosPromise<Secret> {
             return localVarFp.projectsSecretsUpdate(project_id, secret_name, SecretBodyPatch, options).then((request) => request(axios, basePath));
         },
     };
@@ -6155,7 +6120,7 @@ export const TokensApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authTokensList(page?: OrganisationsListPageParameter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListAuthTokens>> {
+        async authTokensList(page?: OrganisationsListPageParameter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AuthTokenMeta>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.authTokensList(page, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TokensApi.authTokensList']?.[localVarOperationServerIndex]?.url;
@@ -6221,7 +6186,7 @@ export const TokensApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authTokensList(page?: OrganisationsListPageParameter, options?: RawAxiosRequestConfig): AxiosPromise<ListAuthTokens> {
+        authTokensList(page?: OrganisationsListPageParameter, options?: RawAxiosRequestConfig): AxiosPromise<Array<AuthTokenMeta>> {
             return localVarFp.authTokensList(page, options).then((request) => request(axios, basePath));
         },
         /**

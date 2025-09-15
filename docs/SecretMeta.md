@@ -1,23 +1,23 @@
-# SecretResponse
+# SecretMeta
 
-Secret response
+Secret metadata response/object
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **string** | Secret name | [default to undefined]
-**type** | [**SecretCreateType**](SecretCreateType.md) |  | [default to undefined]
-**payload** | [**SecretResponsePayload**](SecretResponsePayload.md) |  | [optional] [default to undefined]
+**type** | [**SecretMetaType**](SecretMetaType.md) |  | [default to undefined]
+**payload** | [**SecretMetaPayload**](SecretMetaPayload.md) |  | [optional] [default to undefined]
 **revision** | **number** | Secret revision | [default to undefined]
 **date** | [**ModelDate**](ModelDate.md) |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { SecretResponse } from '@qernal/chaos-client';
+import { SecretMeta } from '@qernal/chaos-client';
 
-const instance: SecretResponse = {
+const instance: SecretMeta = {
     name,
     type,
     payload,

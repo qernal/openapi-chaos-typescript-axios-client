@@ -1,6 +1,6 @@
-# ProjectResponse
+# Project
 
-Project response
+Project response/object
 
 ## Properties
 
@@ -14,9 +14,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { ProjectResponse } from '@qernal/chaos-client';
+import { Project } from '@qernal/chaos-client';
 
-const instance: ProjectResponse = {
+const instance: Project = {
     id,
     org_id,
     name,

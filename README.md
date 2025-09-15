@@ -1,4 +1,4 @@
-## @qernal/chaos-client@1.0.1
+## @qernal/chaos-client@1.0.2
 
 This generator creates TypeScript/JavaScript client that utilizes [axios](https://github.com/axios/axios). The generated Node module can be used in the following environments:
 
@@ -36,7 +36,7 @@ navigate to the folder of your consuming project and run one of the following co
 _published:_
 
 ```
-npm install @qernal/chaos-client@1.0.1 --save
+npm install @qernal/chaos-client@1.0.2 --save
 ```
 
 _unPublished (not recommended):_
@@ -140,14 +140,9 @@ Class | Method | HTTP request | Description
  - [HostBody](docs/HostBody.md)
  - [HostBodyPatch](docs/HostBodyPatch.md)
  - [HostVerificationStatus](docs/HostVerificationStatus.md)
- - [ListAuthTokens](docs/ListAuthTokens.md)
  - [ListFunction](docs/ListFunction.md)
- - [ListHosts](docs/ListHosts.md)
  - [ListLogResponse](docs/ListLogResponse.md)
- - [ListOrganisationResponse](docs/ListOrganisationResponse.md)
- - [ListProjectResponse](docs/ListProjectResponse.md)
  - [ListProviderResponse](docs/ListProviderResponse.md)
- - [ListSecretResponse](docs/ListSecretResponse.md)
  - [Location](docs/Location.md)
  - [Log](docs/Log.md)
  - [LogLog](docs/LogLog.md)
@@ -166,8 +161,8 @@ Class | Method | HTTP request | Description
  - [MetricsAggregationsList200Response](docs/MetricsAggregationsList200Response.md)
  - [ModelDate](docs/ModelDate.md)
  - [NotFoundResponse](docs/NotFoundResponse.md)
+ - [Organisation](docs/Organisation.md)
  - [OrganisationBody](docs/OrganisationBody.md)
- - [OrganisationResponse](docs/OrganisationResponse.md)
  - [OrganisationsListPageParameter](docs/OrganisationsListPageParameter.md)
  - [PaginationLinks](docs/PaginationLinks.md)
  - [PaginationMeta](docs/PaginationMeta.md)
@@ -176,27 +171,27 @@ Class | Method | HTTP request | Description
  - [PaymentMethodBody](docs/PaymentMethodBody.md)
  - [PaymentMethodCreate](docs/PaymentMethodCreate.md)
  - [PaymentMethodCreateLinks](docs/PaymentMethodCreateLinks.md)
+ - [Project](docs/Project.md)
  - [ProjectBody](docs/ProjectBody.md)
  - [ProjectBodyPatch](docs/ProjectBodyPatch.md)
- - [ProjectResponse](docs/ProjectResponse.md)
  - [Provider](docs/Provider.md)
  - [ProviderLocations](docs/ProviderLocations.md)
  - [Quota](docs/Quota.md)
+ - [Secret](docs/Secret.md)
  - [SecretBody](docs/SecretBody.md)
  - [SecretBodyPatch](docs/SecretBodyPatch.md)
  - [SecretCertificate](docs/SecretCertificate.md)
  - [SecretCreatePayload](docs/SecretCreatePayload.md)
  - [SecretCreateType](docs/SecretCreateType.md)
  - [SecretEnvironment](docs/SecretEnvironment.md)
- - [SecretMetaResponse](docs/SecretMetaResponse.md)
- - [SecretMetaResponseCertificatePayload](docs/SecretMetaResponseCertificatePayload.md)
- - [SecretMetaResponseDek](docs/SecretMetaResponseDek.md)
- - [SecretMetaResponsePayload](docs/SecretMetaResponsePayload.md)
- - [SecretMetaResponseRegistryPayload](docs/SecretMetaResponseRegistryPayload.md)
+ - [SecretMeta](docs/SecretMeta.md)
+ - [SecretMetaCertificatePayload](docs/SecretMetaCertificatePayload.md)
+ - [SecretMetaDek](docs/SecretMetaDek.md)
+ - [SecretMetaPayload](docs/SecretMetaPayload.md)
+ - [SecretMetaRegistryPayload](docs/SecretMetaRegistryPayload.md)
  - [SecretMetaType](docs/SecretMetaType.md)
+ - [SecretPayload](docs/SecretPayload.md)
  - [SecretRegistry](docs/SecretRegistry.md)
- - [SecretResponse](docs/SecretResponse.md)
- - [SecretResponsePayload](docs/SecretResponsePayload.md)
  - [UnauthorisedResponse](docs/UnauthorisedResponse.md)
 
 

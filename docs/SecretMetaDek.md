@@ -1,4 +1,4 @@
-# SecretMetaResponseDek
+# SecretMetaDek
 
 DEK secret, `type: dek`
 
@@ -11,9 +11,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { SecretMetaResponseDek } from '@qernal/chaos-client';
+import { SecretMetaDek } from '@qernal/chaos-client';
 
-const instance: SecretMetaResponseDek = {
+const instance: SecretMetaDek = {
     _public,
 };
 ```

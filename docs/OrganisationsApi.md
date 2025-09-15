@@ -13,7 +13,7 @@ All URIs are relative to *https://chaos.qernal.com/v1*
 |[**organisationsUpdate**](#organisationsupdate) | **PUT** /organisations/{organisation_id} | Update an organisation|
 
 # **organisationsCreate**
-> OrganisationResponse organisationsCreate()
+> Organisation organisationsCreate()
 
 Create an organisation
 
@@ -45,7 +45,7 @@ const { status, data } = await apiInstance.organisationsCreate(
 
 ### Return type
 
-**OrganisationResponse**
+**Organisation**
 
 ### Authorization
 
@@ -121,7 +121,7 @@ const { status, data } = await apiInstance.organisationsDelete(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **organisationsGet**
-> OrganisationResponse organisationsGet()
+> Organisation organisationsGet()
 
 Get a single organisation
 
@@ -152,7 +152,7 @@ const { status, data } = await apiInstance.organisationsGet(
 
 ### Return type
 
-**OrganisationResponse**
+**Organisation**
 
 ### Authorization
 
@@ -174,7 +174,7 @@ const { status, data } = await apiInstance.organisationsGet(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **organisationsList**
-> ListOrganisationResponse organisationsList()
+> Array<Organisation> organisationsList()
 
 List organisations
 
@@ -209,7 +209,7 @@ const { status, data } = await apiInstance.organisationsList(
 
 ### Return type
 
-**ListOrganisationResponse**
+**Array<Organisation>**
 
 ### Authorization
 
@@ -224,7 +224,7 @@ const { status, data } = await apiInstance.organisationsList(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | List organisations |  -  |
+|**200** | List organisations |  * Pagination-Total-Count -  <br>  * Pagination-Page-Size -  <br>  * Pagination-Page-After -  <br>  * Pagination-Page-Before -  <br>  * Pagination-Total-Pages -  <br>  * Link -  <br>  |
 |**403** | Unauthorised |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -339,7 +339,7 @@ const { status, data } = await apiInstance.organisationsQuotasList(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **organisationsUpdate**
-> OrganisationResponse organisationsUpdate()
+> Organisation organisationsUpdate()
 
 Update an organisation
 
@@ -374,7 +374,7 @@ const { status, data } = await apiInstance.organisationsUpdate(
 
 ### Return type
 
-**OrganisationResponse**
+**Organisation**
 
 ### Authorization
 

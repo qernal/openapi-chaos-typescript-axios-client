@@ -1,4 +1,4 @@
-# SecretResponsePayload
+# SecretMetaPayload
 
 
 ## Properties
@@ -7,15 +7,17 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **certificate** | **string** | Public SSL certificate | [default to undefined]
 **registry** | **string** | Private registry domain/location, when using the private docker hub registry sepcify &#x60;docker.io&#x60; &gt; Without http scheme  | [default to undefined]
+**_public** | **string** | Base64 encoded DEK public key | [default to undefined]
 
 ## Example
 
 ```typescript
-import { SecretResponsePayload } from '@qernal/chaos-client';
+import { SecretMetaPayload } from '@qernal/chaos-client';
 
-const instance: SecretResponsePayload = {
+const instance: SecretMetaPayload = {
     certificate,
     registry,
+    _public,
 };
 ```
 

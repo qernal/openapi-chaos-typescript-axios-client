@@ -1,22 +1,20 @@
-# ListHosts
+# SecretMetaCertificatePayload
 
-List of projects hosts
+Secret metadata certificate payload
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**meta** | [**PaginationMeta**](PaginationMeta.md) |  | [default to undefined]
-**data** | [**Array&lt;Host&gt;**](Host.md) |  | [default to undefined]
+**certificate** | **string** | Public SSL certificate | [default to undefined]
 
 ## Example
 
 ```typescript
-import { ListHosts } from '@qernal/chaos-client';
+import { SecretMetaCertificatePayload } from '@qernal/chaos-client';
 
-const instance: ListHosts = {
-    meta,
-    data,
+const instance: SecretMetaCertificatePayload = {
+    certificate,
 };
 ```
 
