@@ -1,4 +1,4 @@
-## @qernal/chaos-client@1.0.6
+## @qernal/chaos-client@1.0.7
 
 This generator creates TypeScript/JavaScript client that utilizes [axios](https://github.com/axios/axios). The generated Node module can be used in the following environments:
 
@@ -36,7 +36,7 @@ navigate to the folder of your consuming project and run one of the following co
 _published:_
 
 ```
-npm install @qernal/chaos-client@1.0.6 --save
+npm install @qernal/chaos-client@1.0.7 --save
 ```
 
 _unPublished (not recommended):_
@@ -163,6 +163,7 @@ Class | Method | HTTP request | Description
  - [NotFoundResponse](docs/NotFoundResponse.md)
  - [Organisation](docs/Organisation.md)
  - [OrganisationBody](docs/OrganisationBody.md)
+ - [OrganisationBodyPatch](docs/OrganisationBodyPatch.md)
  - [OrganisationsListPageParameter](docs/OrganisationsListPageParameter.md)
  - [PaginationLinks](docs/PaginationLinks.md)
  - [PaginationMeta](docs/PaginationMeta.md)

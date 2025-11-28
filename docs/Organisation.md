@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** | Organisation id | [default to undefined]
 **user_id** | **string** | User id | [default to undefined]
+**billing_account_id** | **string** | Billing account id | [optional] [default to undefined]
 **name** | **string** | Organisation name | [default to undefined]
 **date** | [**ModelDate**](ModelDate.md) |  | [default to undefined]
 
@@ -19,6 +20,7 @@ import { Organisation } from '@qernal/chaos-client';
 const instance: Organisation = {
     id,
     user_id,
+    billing_account_id,
     name,
     date,
 };

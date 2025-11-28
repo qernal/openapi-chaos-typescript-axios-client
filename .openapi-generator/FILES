@@ -60,6 +60,7 @@ docs/MetricsApi.md
 docs/NotFoundResponse.md
 docs/Organisation.md
 docs/OrganisationBody.md
+docs/OrganisationBodyPatch.md
 docs/OrganisationsApi.md
 docs/OrganisationsListPageParameter.md
 docs/PaginationLinks.md

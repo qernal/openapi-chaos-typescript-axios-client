@@ -1,20 +1,20 @@
-# OrganisationBody
+# OrganisationBodyPatch
 
-Organisation body
+Organisation patch fields
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **string** | Organisation name | [default to undefined]
-**billing_account_id** | **string** | Billing account id | [default to undefined]
+**name** | **string** | Organisation name | [optional] [default to undefined]
+**billing_account_id** | **string** | Billing account id | [optional] [default to undefined]
 
 ## Example
 
 ```typescript
-import { OrganisationBody } from '@qernal/chaos-client';
+import { OrganisationBodyPatch } from '@qernal/chaos-client';
 
-const instance: OrganisationBody = {
+const instance: OrganisationBodyPatch = {
     name,
     billing_account_id,
 };

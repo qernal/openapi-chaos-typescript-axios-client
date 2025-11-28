@@ -819,6 +819,10 @@ export interface Organisation {
      */
     'user_id': string;
     /**
+     * Billing account id
+     */
+    'billing_account_id'?: string;
+    /**
      * Organisation name
      */
     'name': string;
@@ -832,6 +836,23 @@ export interface OrganisationBody {
      * Organisation name
      */
     'name': string;
+    /**
+     * Billing account id
+     */
+    'billing_account_id': string;
+}
+/**
+ * Organisation patch fields
+ */
+export interface OrganisationBodyPatch {
+    /**
+     * Organisation name
+     */
+    'name'?: string;
+    /**
+     * Billing account id
+     */
+    'billing_account_id'?: string;
 }
 export interface OrganisationsListPageParameter {
     /**
