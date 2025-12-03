@@ -1,20 +1,20 @@
-# SecretCertificate
+# SecretBodyCertificatePayload
 
-Encrypted SSL private key and plain certificate. Certificate expected in x509 pem format, key expected in pkcs8 or pkcs1 pem format. `type: certificate`
+Encrypted TLS private key and plain certificate. Certificate expected in x509 pem format, key expected in pkcs8 or pkcs1 pem format. `type: certificate`
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**certificate** | **string** | Public certificate | [default to undefined]
+**certificate** | **string** | Public TLS certificate | [default to undefined]
 **certificate_value** | **string** | Encrypted certificate private key | [default to undefined]
 
 ## Example
 
 ```typescript
-import { SecretCertificate } from '@qernal/chaos-client';
+import { SecretBodyCertificatePayload } from '@qernal/chaos-client';
 
-const instance: SecretCertificate = {
+const instance: SecretBodyCertificatePayload = {
     certificate,
     certificate_value,
 };

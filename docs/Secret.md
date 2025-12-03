@@ -7,7 +7,7 @@ Secret response/object
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **string** | Secret name | [default to undefined]
-**type** | [**SecretCreateType**](SecretCreateType.md) |  | [default to undefined]
+**type** | [**SecretType**](SecretType.md) |  | [default to undefined]
 **payload** | [**SecretPayload**](SecretPayload.md) |  | [optional] [default to undefined]
 **revision** | **number** | Secret revision | [default to undefined]
 **date** | [**ModelDate**](ModelDate.md) |  | [default to undefined]

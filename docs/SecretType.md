@@ -1,4 +1,4 @@
-# SecretMetaType
+# SecretType
 
 Secrets types: registry, certificate, environment, dek
 

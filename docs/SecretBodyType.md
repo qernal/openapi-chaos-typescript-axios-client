@@ -1,4 +1,4 @@
-# SecretCreateType
+# SecretBodyType
 
 Secrets types: registry, certificate, environment
 

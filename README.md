@@ -1,4 +1,4 @@
-## @qernal/chaos-client@1.0.7
+## @qernal/chaos-client@1.0.8
 
 This generator creates TypeScript/JavaScript client that utilizes [axios](https://github.com/axios/axios). The generated Node module can be used in the following environments:
 
@@ -36,7 +36,7 @@ navigate to the folder of your consuming project and run one of the following co
 _published:_
 
 ```
-npm install @qernal/chaos-client@1.0.7 --save
+npm install @qernal/chaos-client@1.0.8 --save
 ```
 
 _unPublished (not recommended):_
@@ -180,19 +180,17 @@ Class | Method | HTTP request | Description
  - [Quota](docs/Quota.md)
  - [Secret](docs/Secret.md)
  - [SecretBody](docs/SecretBody.md)
+ - [SecretBodyCertificatePayload](docs/SecretBodyCertificatePayload.md)
+ - [SecretBodyEnvironmentPayload](docs/SecretBodyEnvironmentPayload.md)
  - [SecretBodyPatch](docs/SecretBodyPatch.md)
- - [SecretCertificate](docs/SecretCertificate.md)
- - [SecretCreatePayload](docs/SecretCreatePayload.md)
- - [SecretCreateType](docs/SecretCreateType.md)
- - [SecretEnvironment](docs/SecretEnvironment.md)
- - [SecretMeta](docs/SecretMeta.md)
- - [SecretMetaCertificatePayload](docs/SecretMetaCertificatePayload.md)
- - [SecretMetaDek](docs/SecretMetaDek.md)
- - [SecretMetaPayload](docs/SecretMetaPayload.md)
- - [SecretMetaRegistryPayload](docs/SecretMetaRegistryPayload.md)
- - [SecretMetaType](docs/SecretMetaType.md)
+ - [SecretBodyPayload](docs/SecretBodyPayload.md)
+ - [SecretBodyRegistryPayload](docs/SecretBodyRegistryPayload.md)
+ - [SecretBodyType](docs/SecretBodyType.md)
+ - [SecretCertificatePayload](docs/SecretCertificatePayload.md)
+ - [SecretDekPayload](docs/SecretDekPayload.md)
  - [SecretPayload](docs/SecretPayload.md)
- - [SecretRegistry](docs/SecretRegistry.md)
+ - [SecretRegistryPayload](docs/SecretRegistryPayload.md)
+ - [SecretType](docs/SecretType.md)
  - [UnauthorisedResponse](docs/UnauthorisedResponse.md)
 
 

@@ -1,4 +1,4 @@
-# SecretMetaDek
+# SecretDekPayload
 
 DEK secret, `type: dek`
 
@@ -6,15 +6,15 @@ DEK secret, `type: dek`
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**_public** | **string** | Base64 encoded DEK public key | [default to undefined]
+**dek** | **string** | Base64 encoded Data Encryption Key (DEK) | [default to undefined]
 
 ## Example
 
 ```typescript
-import { SecretMetaDek } from '@qernal/chaos-client';
+import { SecretDekPayload } from '@qernal/chaos-client';
 
-const instance: SecretMetaDek = {
-    _public,
+const instance: SecretDekPayload = {
+    dek,
 };
 ```
 

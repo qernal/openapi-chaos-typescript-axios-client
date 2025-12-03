@@ -1,20 +1,20 @@
-# SecretMetaCertificatePayload
+# SecretBodyEnvironmentPayload
 
-Secret metadata certificate payload
+Encrypted ENV secret, `type: environment`
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**certificate** | **string** | Public SSL certificate | [default to undefined]
+**environment_value** | **string** | Encrypted environment value | [default to undefined]
 
 ## Example
 
 ```typescript
-import { SecretMetaCertificatePayload } from '@qernal/chaos-client';
+import { SecretBodyEnvironmentPayload } from '@qernal/chaos-client';
 
-const instance: SecretMetaCertificatePayload = {
-    certificate,
+const instance: SecretBodyEnvironmentPayload = {
+    environment_value,
 };
 ```
 

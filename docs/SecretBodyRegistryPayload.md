@@ -1,23 +1,22 @@
-# SecretMetaPayload
+# SecretBodyRegistryPayload
 
+Encrypted private container registry, `type: registry`
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**certificate** | **string** | Public SSL certificate | [default to undefined]
 **registry** | **string** | Private registry domain/location, when using the private docker hub registry sepcify &#x60;docker.io&#x60; &gt; Without http scheme  | [default to undefined]
-**_public** | **string** | Base64 encoded DEK public key | [default to undefined]
+**registry_value** | **string** | Token used for auth to the registry | [default to undefined]
 
 ## Example
 
 ```typescript
-import { SecretMetaPayload } from '@qernal/chaos-client';
+import { SecretBodyRegistryPayload } from '@qernal/chaos-client';
 
-const instance: SecretMetaPayload = {
-    certificate,
+const instance: SecretBodyRegistryPayload = {
     registry,
-    _public,
+    registry_value,
 };
 ```
 

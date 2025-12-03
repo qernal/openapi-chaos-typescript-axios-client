@@ -7,8 +7,8 @@ Secret body
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **string** | Secret name | [default to undefined]
-**type** | [**SecretCreateType**](SecretCreateType.md) |  | [default to undefined]
-**payload** | [**SecretCreatePayload**](SecretCreatePayload.md) |  | [default to undefined]
+**type** | [**SecretBodyType**](SecretBodyType.md) |  | [default to undefined]
+**payload** | [**SecretBodyPayload**](SecretBodyPayload.md) |  | [default to undefined]
 **encryption** | **string** | Encryption entity | [default to undefined]
 
 ## Example

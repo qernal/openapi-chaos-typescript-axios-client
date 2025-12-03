@@ -1,4 +1,4 @@
-# SecretMetaRegistryPayload
+# SecretRegistryPayload
 
 Secret metadata registry payload
 
@@ -11,9 +11,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { SecretMetaRegistryPayload } from '@qernal/chaos-client';
+import { SecretRegistryPayload } from '@qernal/chaos-client';
 
-const instance: SecretMetaRegistryPayload = {
+const instance: SecretRegistryPayload = {
     registry,
 };
 ```

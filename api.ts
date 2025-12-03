@@ -1168,7 +1168,7 @@ export interface Secret {
      * Secret name
      */
     'name': string;
-    'type': SecretCreateType;
+    'type': SecretType;
     'payload'?: SecretPayload;
     /**
      * Secret revision
@@ -1186,8 +1186,8 @@ export interface SecretBody {
      * Secret name
      */
     'name': string;
-    'type': SecretCreateType;
-    'payload': SecretCreatePayload;
+    'type': SecretBodyType;
+    'payload': SecretBodyPayload;
     /**
      * Encryption entity
      */
@@ -1196,24 +1196,11 @@ export interface SecretBody {
 
 
 /**
- * Secret body patch fields
+ * Encrypted TLS private key and plain certificate. Certificate expected in x509 pem format, key expected in pkcs8 or pkcs1 pem format. `type: certificate`
  */
-export interface SecretBodyPatch {
-    'type': SecretCreateType;
-    'payload': SecretCreatePayload;
+export interface SecretBodyCertificatePayload {
     /**
-     * Encryption entity
-     */
-    'encryption': string;
-}
-
-
-/**
- * Encrypted SSL private key and plain certificate. Certificate expected in x509 pem format, key expected in pkcs8 or pkcs1 pem format. `type: certificate`
- */
-export interface SecretCertificate {
-    /**
-     * Public certificate
+     * Public TLS certificate
      */
     'certificate': string;
     /**
@@ -1222,106 +1209,37 @@ export interface SecretCertificate {
     'certificate_value': string;
 }
 /**
- * @type SecretCreatePayload
- * Payload for secret
- */
-export type SecretCreatePayload = SecretCertificate | SecretEnvironment | SecretRegistry;
-
-/**
- * Secrets types: registry, certificate, environment
- */
-
-export const SecretCreateType = {
-    registry: 'registry',
-    certificate: 'certificate',
-    environment: 'environment'
-} as const;
-
-export type SecretCreateType = typeof SecretCreateType[keyof typeof SecretCreateType];
-
-
-/**
  * Encrypted ENV secret, `type: environment`
  */
-export interface SecretEnvironment {
+export interface SecretBodyEnvironmentPayload {
     /**
      * Encrypted environment value
      */
     'environment_value': string;
 }
 /**
- * Secret metadata response/object
+ * Secret body patch fields
  */
-export interface SecretMeta {
+export interface SecretBodyPatch {
+    'type': SecretBodyType;
+    'payload': SecretBodyPayload;
     /**
-     * Secret name
+     * Encryption entity
      */
-    'name': string;
-    'type': SecretMetaType;
-    'payload'?: SecretMetaPayload;
-    /**
-     * Secret revision
-     */
-    'revision': number;
-    'date': ModelDate;
+    'encryption': string;
 }
 
 
 /**
- * Secret metadata certificate payload
+ * @type SecretBodyPayload
+ * Payload for secret
  */
-export interface SecretMetaCertificatePayload {
-    /**
-     * Public SSL certificate
-     */
-    'certificate': string;
-}
-/**
- * DEK secret, `type: dek`
- */
-export interface SecretMetaDek {
-    /**
-     * Base64 encoded DEK public key
-     */
-    'public': string;
-}
-/**
- * @type SecretMetaPayload
- */
-export type SecretMetaPayload = SecretMetaCertificatePayload | SecretMetaDek | SecretMetaRegistryPayload;
-
-/**
- * Secret metadata registry payload
- */
-export interface SecretMetaRegistryPayload {
-    /**
-     * Private registry domain/location, when using the private docker hub registry sepcify `docker.io` > Without http scheme 
-     */
-    'registry': string;
-}
-/**
- * Secrets types: registry, certificate, environment, dek
- */
-
-export const SecretMetaType = {
-    registry: 'registry',
-    certificate: 'certificate',
-    environment: 'environment',
-    dek: 'dek'
-} as const;
-
-export type SecretMetaType = typeof SecretMetaType[keyof typeof SecretMetaType];
-
-
-/**
- * @type SecretPayload
- */
-export type SecretPayload = SecretMetaCertificatePayload | SecretMetaRegistryPayload;
+export type SecretBodyPayload = SecretBodyCertificatePayload | SecretBodyEnvironmentPayload | SecretBodyRegistryPayload;
 
 /**
  * Encrypted private container registry, `type: registry`
  */
-export interface SecretRegistry {
+export interface SecretBodyRegistryPayload {
     /**
      * Private registry domain/location, when using the private docker hub registry sepcify `docker.io` > Without http scheme 
      */
@@ -1331,6 +1249,65 @@ export interface SecretRegistry {
      */
     'registry_value': string;
 }
+/**
+ * Secrets types: registry, certificate, environment
+ */
+
+export const SecretBodyType = {
+    registry: 'registry',
+    certificate: 'certificate',
+    environment: 'environment'
+} as const;
+
+export type SecretBodyType = typeof SecretBodyType[keyof typeof SecretBodyType];
+
+
+/**
+ * Secret metadata certificate payload
+ */
+export interface SecretCertificatePayload {
+    /**
+     * Public TLS certificate
+     */
+    'certificate': string;
+}
+/**
+ * DEK secret, `type: dek`
+ */
+export interface SecretDekPayload {
+    /**
+     * Base64 encoded Data Encryption Key (DEK)
+     */
+    'dek': string;
+}
+/**
+ * @type SecretPayload
+ */
+export type SecretPayload = SecretCertificatePayload | SecretDekPayload | SecretRegistryPayload | any;
+
+/**
+ * Secret metadata registry payload
+ */
+export interface SecretRegistryPayload {
+    /**
+     * Private registry domain/location, when using the private docker hub registry sepcify `docker.io` > Without http scheme 
+     */
+    'registry': string;
+}
+/**
+ * Secrets types: registry, certificate, environment, dek
+ */
+
+export const SecretType = {
+    registry: 'registry',
+    certificate: 'certificate',
+    environment: 'environment',
+    dek: 'dek'
+} as const;
+
+export type SecretType = typeof SecretType[keyof typeof SecretType];
+
+
 /**
  * Unauthorised
  */
@@ -5554,11 +5531,11 @@ export const SecretsApiAxiosParamCreator = function (configuration?: Configurati
          * @summary List project secrets of a specific type
          * @param {string} project_id Project ID reference
          * @param {OrganisationsListPageParameter} [page] Query parameters for pagination
-         * @param {SecretMetaType} [secret_type] Type of secret to filter on
+         * @param {SecretType} [secret_type] Type of secret to filter on
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsSecretsList: async (project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretMetaType, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        projectsSecretsList: async (project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretType, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'project_id' is not null or undefined
             assertParamExists('projectsSecretsList', 'project_id', project_id)
             const localVarPath = `/projects/{project_id}/secrets`
@@ -5696,7 +5673,7 @@ export const SecretsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsSecretsGet(project_id: string, secret_name: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SecretMeta>> {
+        async projectsSecretsGet(project_id: string, secret_name: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Secret>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsSecretsGet(project_id, secret_name, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SecretsApi.projectsSecretsGet']?.[localVarOperationServerIndex]?.url;
@@ -5707,11 +5684,11 @@ export const SecretsApiFp = function(configuration?: Configuration) {
          * @summary List project secrets of a specific type
          * @param {string} project_id Project ID reference
          * @param {OrganisationsListPageParameter} [page] Query parameters for pagination
-         * @param {SecretMetaType} [secret_type] Type of secret to filter on
+         * @param {SecretType} [secret_type] Type of secret to filter on
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretMetaType, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Secret>>> {
+        async projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretType, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Secret>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.projectsSecretsList(project_id, page, secret_type, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SecretsApi.projectsSecretsList']?.[localVarOperationServerIndex]?.url;
@@ -5771,7 +5748,7 @@ export const SecretsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsSecretsGet(project_id: string, secret_name: string, options?: RawAxiosRequestConfig): AxiosPromise<SecretMeta> {
+        projectsSecretsGet(project_id: string, secret_name: string, options?: RawAxiosRequestConfig): AxiosPromise<Secret> {
             return localVarFp.projectsSecretsGet(project_id, secret_name, options).then((request) => request(axios, basePath));
         },
         /**
@@ -5779,11 +5756,11 @@ export const SecretsApiFactory = function (configuration?: Configuration, basePa
          * @summary List project secrets of a specific type
          * @param {string} project_id Project ID reference
          * @param {OrganisationsListPageParameter} [page] Query parameters for pagination
-         * @param {SecretMetaType} [secret_type] Type of secret to filter on
+         * @param {SecretType} [secret_type] Type of secret to filter on
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretMetaType, options?: RawAxiosRequestConfig): AxiosPromise<Array<Secret>> {
+        projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretType, options?: RawAxiosRequestConfig): AxiosPromise<Array<Secret>> {
             return localVarFp.projectsSecretsList(project_id, page, secret_type, options).then((request) => request(axios, basePath));
         },
         /**
@@ -5846,11 +5823,11 @@ export class SecretsApi extends BaseAPI {
      * @summary List project secrets of a specific type
      * @param {string} project_id Project ID reference
      * @param {OrganisationsListPageParameter} [page] Query parameters for pagination
-     * @param {SecretMetaType} [secret_type] Type of secret to filter on
+     * @param {SecretType} [secret_type] Type of secret to filter on
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretMetaType, options?: RawAxiosRequestConfig) {
+    public projectsSecretsList(project_id: string, page?: OrganisationsListPageParameter, secret_type?: SecretType, options?: RawAxiosRequestConfig) {
         return SecretsApiFp(this.configuration).projectsSecretsList(project_id, page, secret_type, options).then((request) => request(this.axios, this.basePath));
     }
 

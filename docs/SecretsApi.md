@@ -126,7 +126,7 @@ const { status, data } = await apiInstance.projectsSecretsDelete(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **projectsSecretsGet**
-> SecretMeta projectsSecretsGet()
+> Secret projectsSecretsGet()
 
 Get a specific project
 
@@ -160,7 +160,7 @@ const { status, data } = await apiInstance.projectsSecretsGet(
 
 ### Return type
 
-**SecretMeta**
+**Secret**
 
 ### Authorization
 
@@ -175,7 +175,7 @@ const { status, data } = await apiInstance.projectsSecretsGet(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | Get secret metadata |  -  |
+|**200** | Get secret |  -  |
 |**404** | Resource Not Found |  -  |
 |**403** | Unauthorised |  -  |
 
@@ -200,7 +200,7 @@ const apiInstance = new SecretsApi(configuration);
 
 let project_id: string; //Project ID reference (default to undefined)
 let page: OrganisationsListPageParameter; //Query parameters for pagination (optional) (default to undefined)
-let secret_type: SecretMetaType; //Type of secret to filter on (optional) (default to undefined)
+let secret_type: SecretType; //Type of secret to filter on (optional) (default to undefined)
 
 const { status, data } = await apiInstance.projectsSecretsList(
     project_id,
@@ -215,7 +215,7 @@ const { status, data } = await apiInstance.projectsSecretsList(
 |------------- | ------------- | ------------- | -------------|
 | **project_id** | [**string**] | Project ID reference | defaults to undefined|
 | **page** | **OrganisationsListPageParameter** | Query parameters for pagination | (optional) defaults to undefined|
-| **secret_type** | **SecretMetaType** | Type of secret to filter on | (optional) defaults to undefined|
+| **secret_type** | **SecretType** | Type of secret to filter on | (optional) defaults to undefined|
 
 
 ### Return type
