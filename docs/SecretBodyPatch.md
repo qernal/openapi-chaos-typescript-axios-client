@@ -6,7 +6,6 @@ Secret body patch fields
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**type** | [**SecretBodyType**](SecretBodyType.md) |  | [default to undefined]
 **payload** | [**SecretBodyPayload**](SecretBodyPayload.md) |  | [default to undefined]
 **encryption** | **string** | Encryption entity | [default to undefined]
 
@@ -16,7 +15,6 @@ Name | Type | Description | Notes
 import { SecretBodyPatch } from '@qernal/chaos-client';
 
 const instance: SecretBodyPatch = {
-    type,
     payload,
     encryption,
 };

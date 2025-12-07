@@ -1221,15 +1221,12 @@ export interface SecretBodyEnvironmentPayload {
  * Secret body patch fields
  */
 export interface SecretBodyPatch {
-    'type': SecretBodyType;
     'payload': SecretBodyPayload;
     /**
      * Encryption entity
      */
     'encryption': string;
 }
-
-
 /**
  * @type SecretBodyPayload
  * Payload for secret
